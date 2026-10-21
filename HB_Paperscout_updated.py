@@ -325,7 +325,7 @@ with tab_dashboard:
             }
         )
         st.caption(f'Showing {len(view)} of {total} records. Journal name and Europe PMC/PubMed availability are shown separately. “Open PDF / publisher” opens a known direct PDF URL first and falls back to the DOI/publisher page if a direct PDF URL is not known. Use the individual download button below to verify and save an accessible PDF.')
-        st.download_button('⬇️ Download filtered table (CSV)',csv_bytes(view.drop(columns=['DOI','DOI identifier','Europe PMC Link','PubMed Link','PDF / Full Text'],errors='ignore')),'HB_Paper_Scout_Filtered_Results.csv','text/csv',use_container_width=True)
+        st.download_button('Download filtered table (CSV)',csv_bytes(view.drop(columns=['DOI','DOI identifier','Europe PMC Link','PubMed Link','PDF / Full Text'],errors='ignore')),'HB_Paper_Scout_Filtered_Results.csv','text/csv',use_container_width=True)
 
         st.markdown('### Download individual papers')
         st.caption('Click “Download PDF (publisher fallback)” to try public PDF routes first. If a valid PDF is retrieved, use “Save PDF to computer”. If no public PDF can be retrieved, the app displays a publisher/DOI link as the fallback. It cannot bypass paywalls.')
@@ -360,7 +360,7 @@ with tab_dashboard:
                             st.rerun()
                     elif payload_key in st.session_state and st.session_state[payload_key]:
                         st.download_button(
-                            "💾 Save PDF to computer",
+                            " Save PDF to computer",
                             data=st.session_state[payload_key],
                             file_name=st.session_state.get(filename_key, f"{pmid}.pdf"),
                             mime="application/pdf",
@@ -372,7 +372,7 @@ with tab_dashboard:
                             st.session_state.pop(filename_key, None)
                             st.rerun()
                     else:
-                        if st.button('⬇️ Download PDF (publisher fallback)', key=f"hb_download_{pmid}", use_container_width=True):
+                        if st.button(' Download PDF (publisher fallback)', key=f"hb_download_{pmid}", use_container_width=True):
                             preferred = str(paper.get('PDF URL') or '')
                             with st.spinner(f'Checking public PDF sources for PMID {pmid}…'):
                                 pdf_bytes, filename, result_status = fetch_pdf_bytes(
@@ -445,7 +445,7 @@ with tab_export:
     else:
         df=st.session_state['hb_results'].copy()
         st.write('Download the full result set for Excel, R, Python, or other analysis.')
-        st.download_button('⬇️ Export full results as CSV',csv_bytes(df),'HB_Paper_Scout_Results.csv','text/csv',use_container_width=True)
+        st.download_button(' Export full results as CSV',csv_bytes(df),'HB_Paper_Scout_Results.csv','text/csv',use_container_width=True)
         report=st.session_state.get('hb_report_file','')
         if report: st.markdown('**Timestamped report saved locally:**'); st.code(report,language='text')
         st.markdown('**Output folders**'); st.code(f'PDF attempts: {PDF_DIR}\nCSV reports: {REPORT_DIR}',language='text')
